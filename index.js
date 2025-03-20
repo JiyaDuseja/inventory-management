@@ -39,12 +39,21 @@ const PORT = process.env.PORT || 3000;
 // Middleware to parse JSON requests
 app.use(express.json());
 
-// Load Firebase credentials
-const serviceAccount = require("./firebase-key.json");
+// // Load Firebase credentials
+// const serviceAccount = require("./firebase-key.json");
 
-// Initialize Firebase Admin SDK
+// // Initialize Firebase Admin SDK
+// admin.initializeApp({
+//     credential: admin.credential.cert(serviceAccount),
+// });
+const firebaseConfigJSON = Buffer.from(process.env.FIREBASE_CONFIG_BASE64, "base64").toString("utf-8");
+
+// Parse JSON
+const firebaseConfig = JSON.parse(firebaseConfigJSON);
+
+// Initialize Firebase
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.cert(firebaseConfig),
 });
 
 const db = admin.firestore();
