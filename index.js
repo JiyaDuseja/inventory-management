@@ -1,5 +1,7 @@
 // Import required modules
 const express = require("express");
+const cors = require("cors");
+
 const admin = require("firebase-admin");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -24,6 +26,14 @@ const authenticateUser = (req, res, next) => {
 
 // Initialize Express app
 const app = express();
+app.use(cors());
+
+app.use(cors({
+    origin: "*", // Replace with frontend URL
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
 const PORT = process.env.PORT || 3000;
 
 // Middleware to parse JSON requests
